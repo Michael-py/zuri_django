@@ -1,0 +1,75 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block boots %}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+{% endblock %}
+
+
+{% block content %}
+{% include 'blog/nav.html' %}
+
+
+<div class="blog-body">
+
+	
+
+	<h1>{{ post.title }}</h1>
+	{% if post.author %}
+		<p><span>{{ post.author }} | {{ post.date_created|date }}</span></p>
+	{% else %}
+		<p><span>Unknown | {{ post.date_created|date }}</span></p>
+	{% endif %}
+
+	<article>{{ post.post }}</article>
+
+
+
+	<div class="comment">
+		<h1>comments</h1>
+		<hr>
+
+		{% for comm in comments %}
+
+		<div class="com_block">
+			<h5>{{ comm.user }}:</h5>
+
+			<p>{{ comm.content|linebreaks }}</p>
+		</div>
+
+		{% empty %}
+
+		<div>
+			<h5>No Comments Yet. Be The First to Leave a Comment </h5>
+		</div>
+
+		{% endfor %}
+
+		{% if user.is_authenticated %}
+
+		<h4>Leave a Comment</h4>
+		<form method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{comment_form|crispy}}
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+
+		{% else %}
+
+		<p>You must log in to leave a comment, login <a href="{% url 'index' %}" title="">here</a></p>
+
+		{% endif %}
+	</div>
+	
+
+</div>
+
+
+
+{% endblock %}
+

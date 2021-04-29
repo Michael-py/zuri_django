@@ -1,0 +1,77 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% if user.is_authenticated %}
+
+{% block title %}
+
+Welcome {{ user }}
+
+{% endblock %}
+
+
+{% block content %}
+
+{% include 'blog/nav.html' %}
+
+
+
+<div class="welcome">
+
+	<div class="collect" style="display: flex; justify-content: space-between;">
+		<a href="{% url 'create' %}" title=""><div class="new_art">
+			Add New Article
+		</div></a>
+
+		<div class="new_art2" style="margin-right: 6em;">
+			Articles Count: {{ count }}
+		</div>
+	</div>
+	
+
+	{% for article in posts %}
+
+	<a href="{% url 'details' article.id %}" title="">
+
+		<div class="card">
+			
+
+			<h2>{{ article.title }}</h2><br>
+
+			{% if article.author %}
+			<p>written by: <span>{{ article.author }}</span></p><br>
+			<p>date: {{ article.date_created|date }}</p>
+			{% else %}
+			<p>written by: <span>Unknown</span></p><br>
+			<p>date: {{ article.date_created|date }}</p>
+			{% endif %}
+			
+			<article style="line-height: 2em;">{{ article.post|truncatewords:30 }} <a href="{% url 'details' article.id %}" style="color: #0ffa02; margin-left: 1em;"> Read Article</a></article>
+
+			<div class="crud">
+				<a href="{% url 'update' article.id %}" title=""><div class="edit">
+					edit
+				</div></a>
+
+				<a href="{% url 'delete' article.id %}" title=""><div class="delete">
+					delete
+				</div></a>
+			</div>
+			
+		</div>
+
+	</a>
+
+	{% endfor %}
+
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% endif %}
+

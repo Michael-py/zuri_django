@@ -1,0 +1,56 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}Create an Account{% endblock %}
+
+{% block boots %}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+{% endblock %}
+
+{% block content %}
+{% include 'blog/nav_reg.html' %}
+
+<div class="reg_container">
+
+	<div class="reg_form">
+
+		<h2>Register</h2>
+		<form method="POST"enctype="multipart/form-data" class="form-group">
+		
+		{% if messages %}
+
+		<ul>
+			{% for message in messages %}
+				{% if message.tag == 'error' %}
+
+				<div class="alert alert-danger">
+					<li>
+						{{ message|escape }}
+					</li>
+				</div>
+
+		    	{% endif %}
+
+		    {% endfor %}
+
+		</ul>
+		{% endif %}
+		
+		{% csrf_token %}
+		{{ form|crispy }}
+		<button type="submit" class="btn btn-success">Register</button>
+	    </form>
+
+	    <p><a href="{% url 'index' %}" title="">Go back</a></p>
+
+	</div>
+
+</div>
+
+    
+{% endblock %}
